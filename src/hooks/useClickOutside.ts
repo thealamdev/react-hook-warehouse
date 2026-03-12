@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 interface PageProps {
-    ref: React.RefObject<HTMLDivElement>;
+    ref: React.RefObject<HTMLDivElement | null>;
     callback: () => void;
 }
 
