@@ -83,8 +83,6 @@ function Dropdown() {
 |--------------|-----------------------------|----------|-------------|------------------------------------------------|
 | ref          | `RefObject<HTMLElement>`    | Yes      | —           | Element to detect outside clicks for           |
 | callback     | `() => void`                | Yes      | —           | Function called when click is outside          |
-| eventType    | `'click' \| 'mousedown'`    | No       | `'click'`   | Mouse event to listen to                       |
-| ignoreRefs   | `RefObject<HTMLElement>[]`  | No       | `[]`        | Elements that should not trigger the callback  |
 
 ---
 
