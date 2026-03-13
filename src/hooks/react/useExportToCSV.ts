@@ -6,7 +6,7 @@ interface PageProps<T = any> {
     filename?: string;
 }
 
-export default function useExportCSV<T>({
+export function useExportToCSV<T>({
     data,
     filename = 'data.csv'
 }: PageProps<T>) {
