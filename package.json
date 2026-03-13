@@ -1,6 +1,6 @@
 {
   "name": "react-hook-warehouse",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "Collection of useful React hooks",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
