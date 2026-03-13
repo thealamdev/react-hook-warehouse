@@ -197,6 +197,3 @@ function ResponsiveComponent() {
 | breakpoint  | `number` | `768`   | Max width (px) to consider "mobile"  |
 
 **Returns** `boolean`
-
----
-```
