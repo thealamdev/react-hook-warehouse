@@ -12,66 +12,193 @@ Install the package using npm or yarn:
 npm install react-hook-warehouse
 ```
 
-**1. useToggle**
+All hooks are compatible with both **React** and **Next.js** (client components).
 
-> Use the hook both Next js & React
+---
 
-```jsx
-"use client"; // Remove this line to use in React
-import React from "react";
-import { useToggle } from "react-hook-warehouse";
+### 1. `useToggle`
 
-export default function Page() {
-  const [open, setOpen] = useToggle(false);
+Simple boolean toggle hook with clean API.
+
+```tsx
+import { useToggle } from 'react-hook-warehouse';
+
+function Example() {
+  const [isOpen, toggleIsOpen] = useToggle(false);
+  // or with default value
+  // const [isOpen, toggleIsOpen] = useToggle(true);
 
   return (
     <div>
-      {open && (
-        <div>
-          <h1>Div is open</h1>
-        </div>
-      )}
-      <button type="button" onClick={setOpen}>
-        Toggle
+      <p>Status: {isOpen ? 'Open' : 'Closed'}</p>
+      <button onClick={toggleIsOpen}>
+        {isOpen ? 'Close' : 'Open'}
       </button>
     </div>
   );
 }
 ```
 
-**2. useClickOutside**
+**Parameters**
 
-## Usage
+| Param       | Type      | Default | Description                           |
+|-------------|-----------|---------|---------------------------------------|
+| initialValue| `boolean` | `false` | Initial state of the toggle           |
 
-This package provides functionality for detecting clicks outside of elements. Common use cases include:
+**Returns** `[state: boolean, toggle: () => void]`
 
-- Closing a modal when the user clicks outside of it.
-- Closing a sidebar when the user clicks outside of it.
-- Closing a drawer when the user clicks outside of it.
+---
 
-> Use the hook both Next js & React
+### 2. `useClickOutside`
 
-```jsx
-"use client"; // Remove this line to use in React
-import React, { useRef } from "react";
-import { useClickOutside } from "react-hook-warehouse";
+Detects clicks outside of a specified element (great for modals, dropdowns, drawers).
 
-export default function Page() {
-  const ref = useRef<HTMLDivElement | null>(null);
+```tsx
+import { useRef } from 'react';
+import { useClickOutside } from 'react-hook-warehouse';
+
+function Dropdown() {
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useClickOutside({
-    ref: ref,
+    ref: dropdownRef,
     callback: () => {
-      console.log("click outside of the div");
+      console.log('Clicked outside → should close dropdown');
+      // setIsOpen(false);
     },
   });
 
   return (
-    <div>
-      <div ref={ref} className="w-20 h-20 bg-red-300">
-        The Box
-      </div>
+    <div ref={dropdownRef} className="relative inline-block">
+      <button>Menu</button>
+      {/* dropdown content */}
     </div>
   );
 }
+```
+
+**Parameters** (object)
+
+| Property     | Type                        | Required | Default     | Description                                    |
+|--------------|-----------------------------|----------|-------------|------------------------------------------------|
+| ref          | `RefObject<HTMLElement>`    | Yes      | —           | Element to detect outside clicks for           |
+| callback     | `() => void`                | Yes      | —           | Function called when click is outside          |
+| eventType    | `'click' \| 'mousedown'`    | No       | `'click'`   | Mouse event to listen to                       |
+| ignoreRefs   | `RefObject<HTMLElement>[]`  | No       | `[]`        | Elements that should not trigger the callback  |
+
+---
+
+### 3. `useExportToCSV`
+
+Client-side CSV export hook for array-of-objects data.
+
+```tsx
+import { useExportToCSV } from 'react-hook-warehouse';
+
+const users = [
+  { id: 1, name: 'Shah Alam', age: 26, city: 'Dhaka' },
+  { id: 2, name: 'Aisha Rahman', age: 24, city: 'Chittagong' },
+];
+
+function ExportButton() {
+  const { pending, exportToCSV } = useExportToCSV({
+    data: users,
+    filename: 'users-report.csv',
+  });
+
+  return (
+    <button
+      onClick={exportToCSV}
+      disabled={pending}
+      className="px-4 py-2 bg-blue-600 text-white rounded"
+    >
+      {pending ? 'Exporting...' : 'Export to CSV'}
+    </button>
+  );
+}
+```
+
+**Parameters** (object)
+
+| Property   | Type                  | Required | Default           | Description                                |
+|------------|-----------------------|----------|-------------------|--------------------------------------------|
+| data       | `object[]`            | Yes      | —                 | Array of objects to export                 |
+| filename   | `string`              | No       | —                  | Name of downloaded file (should end with .csv) |
+
+**Returns**
+
+```ts
+{
+  pending: boolean;
+  exportToCSV: () => void;
+}
+```
+
+---
+
+### 4. `useLocation`
+
+Gets user's geolocation (with permission).
+
+```tsx
+import { useLocation } from 'react-hook-warehouse';
+
+function MyLocation() {
+  const location = useLocation();
+
+  return (
+    <div>
+      <p>Latitude: {location.latitude}</p>
+      <p>Longitude: {location.longitude}</p>
+      <p>Timezone: {location.timezone}</p>
+    </div>
+  );
+}
+```
+
+**Returns**
+
+```ts
+{
+  latitude: number | null;
+  longitude: number | null;
+  timezone: string | null;
+}
+```
+
+> **Note**: Requires HTTPS in production and user permission.
+
+---
+
+### 5. `useIsMobile`
+
+Detects mobile-sized screens via media query.
+
+```tsx
+import { useIsMobile } from 'react-hook-warehouse';
+
+function ResponsiveComponent() {
+  const isMobile = useIsMobile(768); // breakpoint in px
+
+  return (
+    <div>
+      {isMobile ? (
+        <MobileLayout />
+      ) : (
+        <DesktopLayout />
+      )}
+    </div>
+  );
+}
+```
+
+**Parameters**
+
+| Param       | Type     | Default | Description                          |
+|-------------|----------|---------|--------------------------------------|
+| breakpoint  | `number` | `768`   | Max width (px) to consider "mobile"  |
+
+**Returns** `boolean`
+
+---
 ```
