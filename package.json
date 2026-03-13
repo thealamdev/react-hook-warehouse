@@ -1,6 +1,6 @@
 {
   "name": "react-hook-warehouse",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Collection of useful React hooks",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -14,12 +14,17 @@
   "keywords": [],
   "author": "Shah Alam",
   "license": "ISC",
-  "type": "commonjs",
-  "dependencies": {
-    "react": "^19.2.4"
+  "type": "module",
+  "peerDependencies": {
+    "next": ">=13",
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "devDependencies": {
     "@types/react": "^19.2.14",
+    "next": "^16.1.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "tsup": "^8.5.1",
     "typescript": "^5.9.3"
   }
