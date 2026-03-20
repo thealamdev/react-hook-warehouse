@@ -197,3 +197,180 @@ function ResponsiveComponent() {
 | breakpoint  | `number` | `768`   | Max width (px) to consider "mobile"  |
 
 **Returns** `boolean`
+
+---
+
+### 6. `useDebounce`
+
+Delays updating a value until after a specified time (useful for search inputs, filters, and API calls).
+
+```jsx
+import { useState, useEffect } from 'react';
+import { useDebounce } from 'react-hook-warehouse';
+
+interface FilterInterface {
+  search: string;
+  event: string;
+  status: string;
+}
+
+function Example() {
+  const [filters, setFilters] = useState<FilterInterface>({
+    search: '',
+    event: '',
+    status: '',
+  });
+
+  // Debounce filters by 600ms
+  const debouncedFilters = useDebounce(filters, 600);
+
+  const handleChange = (name: string, value: string) => {
+    setFilters((prev) => ({ ...prev, [name]: value }));
+  };
+
+  useEffect(() => {
+    // API call or expensive operation
+    console.log('Debounced Filters:', debouncedFilters);
+  }, [debouncedFilters]);
+
+  return (
+    <div>
+      <input
+        placeholder="Search..."
+        onChange={(e) => handleChange('search', e.target.value)}
+      />
+
+      <input
+        placeholder="Event..."
+        onChange={(e) => handleChange('event', e.target.value)}
+      />
+
+      <select onChange={(e) => handleChange('status', e.target.value)}>
+        <option value="">All</option>
+        <option value="paid">Paid</option>
+        <option value="pending">Pending</option>
+      </select>
+    </div>
+  );
+}
+```
+
+**Parameters**
+
+| Param | Type     | Default | Description                |
+| ----- | -------- | ------- | -------------------------- |
+| value | `any`    | —       | The value to debounce      |
+| delay | `number` | `300`   | Delay time in milliseconds |
+
+**Returns** `debouncedValue`
+
+---
+
+Here’s the `useActiveTab` hook documentation written in the same style as your file:
+
+---
+
+### 7. `useActiveTab`
+
+Manages active tab state with optional persistence (e.g., query param or key-based state).
+
+```jsx id="v72k9d"
+"use client";
+
+import { useActiveTab } from "react-hook-warehouse";
+
+enum DashboardTab {
+  ALL = "all",
+  UPCOMING = "upcoming",
+  PAST = "past",
+}
+
+function Example() {
+  const { tab, setTab } = useActiveTab("tab", DashboardTab.ALL);
+
+  return (
+    <div>
+      <div className="flex gap-4">
+        <button onClick={() => setTab(DashboardTab.ALL)}>
+          All
+        </button>
+        <button onClick={() => setTab(DashboardTab.UPCOMING)}>
+          Upcoming
+        </button>
+        <button onClick={() => setTab(DashboardTab.PAST)}>
+          Past
+        </button>
+      </div>
+
+      <p>Active Tab: {tab}</p>
+    </div>
+  );
+}
+```
+
+**Parameters**
+
+| Param        | Type     | Default | Description                               |
+| ------------ | -------- | ------- | ----------------------------------------- |
+| key          | `string` | —       | Unique key for storing/managing tab state |
+| initialValue | `string` | —       | Default active tab value                  |
+
+**Returns**
+
+```ts
+{
+  tab: string;
+  setTab: (value: string) => void;
+}
+```
+
+---
+
+Here’s the `useActivePath` hook documentation written in your existing style:
+
+---
+
+### 8. `useActivePath`
+
+Checks if a given path matches the current route (useful for active links, menus, and navigation highlighting).
+
+```jsx id="v81k2p"
+"use client";
+
+import Link from "next/link";
+import { useActivePath } from "react-hook-warehouse";
+
+function Example() {
+  const isDashboardActive = useActivePath("/dashboard");
+  const isEventActive = useActivePath("/events", "startsWith");
+
+  return (
+    <div className="space-y-2">
+      <Link
+        href="/dashboard"
+        className={isDashboardActive ? "text-primary" : "text-gray-500"}
+      >
+        Dashboard
+      </Link>
+
+      <Link
+        href="/events"
+        className={isEventActive ? "text-primary" : "text-gray-500"}
+      >
+        Events
+      </Link>
+    </div>
+  );
+}
+```
+
+**Parameters**
+
+| Param     | Type                      | Default   | Description                                  |
+| --------- | ------------------------- | --------- | -------------------------------------------- |
+| path      | `string`                  | —         | Path to match against current route          |
+| matchType | `'exact' \| 'startsWith'` | `'exact'` | Matching strategy (`exact` or partial match) |
+
+**Returns** `boolean`
+
+---
